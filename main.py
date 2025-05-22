@@ -1,6 +1,6 @@
 from media_player import MediaPlayer
 from commands import (
-    PlaySongCommand, NextTrackCommand,
+    PlaySongCommand, PauseVideoCommand, NextTrackCommand,
     StopMusicCommand, PreviousTrackCommand, VolumeUpCommand, VolumeDownCommand
 )
 from voice_controller import VoiceController
@@ -10,8 +10,9 @@ if __name__ == "__main__":
     player = MediaPlayer()
     controller = VoiceController()
 
-    # Register commands tanpa pause video
+    # Register commands termasuk pause video
     controller.setCommand("putar lagu favorit", PlaySongCommand(player))
+    controller.setCommand("pause video", PauseVideoCommand(player))
     controller.setCommand("next track", NextTrackCommand(player))
     controller.setCommand("stop musik", StopMusicCommand(player))
     controller.setCommand("kembali ke lagu sebelumnya", PreviousTrackCommand(player))
