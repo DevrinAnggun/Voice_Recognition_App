@@ -101,18 +101,21 @@ if __name__ == "__main__":
     controller.setCommand("naikkan volume", VolumeUpCommand(player))
     controller.setCommand("turunkan volume", VolumeDownCommand(player))
 
-    # Simulasi input perintah suara (teks)
-    commands_to_test = [
-        "putar lagu favorit",
-        "pause video",
-        "next track",
-        "stop musik",
-        "kembali ke lagu sebelumnya",
-        "naikkan volume",
-        "turunkan volume",
-        "perintah tidak ada"
-    ]
+   # Simulasi input perintah suara (teks)
+commands_to_test = [
+    "putar lagu favorit",
+    "pause video",
+    "next track",
+    "stop musik",
+    "kembali ke lagu sebelumnya",
+    "naikkan volume",
+    "turunkan volume",
+    "perintah tidak ada"
+]
 
-    for cmd in commands_to_test:
-        print(f"\nInput suara: {cmd}")
-        controller.executeCommand(cmd)
+print("=== Simulasi Input Suara ===\n")
+for cmd in commands_to_test:
+    print(f"> {cmd}")
+    controller.executeCommand(cmd)
+    print()
+
