@@ -1,4 +1,5 @@
 from abc import ABC, abstractmethod
+import speech_recognition as sr
 
 # Receiver
 class MediaPlayer:
@@ -87,7 +88,7 @@ class VoiceController:
         else:
             print(f"Perintah '{commandName}' tidak dikenali.")
 
-# Simulasi penggunaan
+# Main program with speech recognition and exit feature
 if __name__ == "__main__":
     player = MediaPlayer()
     controller = VoiceController()
@@ -101,21 +102,32 @@ if __name__ == "__main__":
     controller.setCommand("naikkan volume", VolumeUpCommand(player))
     controller.setCommand("turunkan volume", VolumeDownCommand(player))
 
-   # Simulasi input perintah suara (teks)
-commands_to_test = [
-    "putar lagu favorit",
-    "pause video",
-    "next track",
-    "stop musik",
-    "kembali ke lagu sebelumnya",
-    "naikkan volume",
-    "turunkan volume",
-    "perintah tidak ada"
-]
+    recognizer = sr.Recognizer()
+    mic = sr.Microphone()
 
-print("=== Simulasi Input Suara ===\n")
-for cmd in commands_to_test:
-    print(f"> {cmd}")
-    controller.executeCommand(cmd)
-    print()
+    print("=== Silakan ucapkan perintah suara ===")
+    print("Ucapkan 'selesai' atau 'keluar' untuk menghentikan program.\n")
 
+    while True:
+        with mic as source:
+            print("Mendengarkan...")
+            recognizer.adjust_for_ambient_noise(source)
+            audio = recognizer.listen(source)
+
+        try:
+            command_text = recognizer.recognize_google(audio, language="id-ID")
+            command_text_lower = command_text.lower()
+            print(f"Perintah dikenali: {command_text}")
+
+            if command_text_lower in ["selesai", "keluar"]:
+                print("Program dihentikan. Terima kasih!")
+                break
+
+            controller.executeCommand(command_text)
+
+        except sr.UnknownValueError:
+            print("Maaf, suara tidak dapat dikenali.")
+        except sr.RequestError as e:
+            print(f"Error layanan pengenalan suara: {e}")
+
+        print()
